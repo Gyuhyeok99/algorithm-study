@@ -33,7 +33,7 @@ int main() {
 
         if(cnt >= n) {
             l = m + 1;
-            result = max(result, m);
+            result = m;
         }
         else {
             r = m - 1;
