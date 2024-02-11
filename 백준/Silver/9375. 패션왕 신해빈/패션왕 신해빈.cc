@@ -1,36 +1,28 @@
-#include<iostream>
-#include<map>
-#include<string>
+#include <iostream>
+#include <map>
 using namespace std;
+int main() {
 
-int main(void)
-{
-	int t;
-	cin >> t;
-
-	for (int i = 0; i < t; i++)
-	{
-		int result = 1;
-		int n;
-		map<string, int>fashion;		//	사실상 key(의상종류)만 필요로 하게 된다.
-		cin >> n;
-
-		for (int j = 0; j < n; j++)
-		{
-			string s1,s2;
-			cin >> s1>>s2;
-			if (fashion.find(s2) != fashion.end())
-				fashion[s2]++;
-			else
-				fashion[s2] = 1;
-		}
-
-		auto iter = fashion.begin();
-		for (; iter != fashion.end(); iter++)
-		{
-			result *= (iter->second)+1;
-		}
-		cout << result - 1<<'\n';
-	}
-	return 0;
+    string a, b;
+    int t, n;
+    cin >> t;
+    for(int i = 0; i < t; i++) {
+        map<string, int> mp;
+        cin >> n;
+        for(int j = 0; j < n; j++) {
+            cin >> a >> b;
+            if(mp.find(b) != mp.end()) {
+                mp[b]++;
+            }
+            else {
+                mp[b] = 1;
+            }
+        }
+        int x = 1;
+        for(const auto& pair : mp) {
+            x *= pair.second + 1;
+        }
+        cout << x - 1<< '\n';
+    }
+    return 0;
 }
