@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -17,10 +18,7 @@ int main() {
         psum[i] = psum[i - 1] + arr[i];
     }
     for(int i = 0; i <= n - k; i++) {
-        int x = psum[k + i] - psum[i];
-        if(x > m) {
-            m = x;
-        }
+        m = max(psum[k + i] - psum[i], m);
     }
     cout << m;
     return 0;
