@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-int n, m, j, a, s, e, ret;
+int n, m, j, a, s, e, ret, temp;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
@@ -14,18 +14,16 @@ int main() {
             continue;
         }
         else if(a < s) {
-            while(a != s) {
-                s--; e--;
-                ret++;
-            }
-            continue;
+            temp = s - a;
+            s -= temp;
+            e -= temp;
+            ret += temp;
         }
         else if(a > e) {
-            while(a != e) {
-                s++; e++;
-                ret++;
-            }
-            continue;
+            temp = a - e;
+            s += temp;
+            e += temp;
+            ret += temp;
         }
     }
     cout << ret << '\n';
