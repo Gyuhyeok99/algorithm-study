@@ -50,6 +50,5 @@ int main() {
     }
     sort(v.begin(), v.end(), cmp);
     for(string i : v)cout << i << "\n";
-
     return 0;
 }
