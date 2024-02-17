@@ -1,29 +1,30 @@
 #include <iostream>
-#include <cstdlib>
 #include <map>
+#include <cstdlib>
 using namespace std;
+
+int n, m;
+string s[100004];
+string a;
+map<string, int> mp;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    string s;
-    string v[100004];
-    std::map<string, int> m2;
-    int n, m;
+
     cin >> n >> m;
     for(int i = 1; i <= n; i++) {
-        cin >> s;
-        v[i] = s;
-        m2[s] = i;
+        cin >> s[i];
+        mp[s[i]] = i;
     }
-    string r;
+
     for(int i = 0; i < m; i++) {
-        cin >> r;
-        if(atoi(r.c_str())) {
-            cout << v[atoi(r.c_str())] << '\n';
+        cin >> a;
+        if(atoi(a.c_str())) {
+            cout << s[atoi(a.c_str())] << '\n';
         }
         else {
-            cout << m2[r] << '\n';
+            cout << mp[a] << '\n';
         }
     }
-    return 0;
+
 }
