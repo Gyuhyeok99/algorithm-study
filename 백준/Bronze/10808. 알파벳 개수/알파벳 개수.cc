@@ -1,17 +1,18 @@
 #include <iostream>
-#include <string>
-#include <string.h>
 using namespace std;
-int a[26];
+
+string s;
+int arr[26];
 int main() {
-    memset(a, 0, sizeof(a));
-    string s;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
     cin >> s;
     for(int i = 0; i < s.size(); i++) {
-        a[s[i] - 97]++;
+        arr[s[i] - 'a']++;
     }
-    for(int i = 0; i < 26; i++) {
-        cout << a[i] << ' ';
+    for(int a : arr) {
+        cout << a << ' ';
     }
     return 0;
 }
