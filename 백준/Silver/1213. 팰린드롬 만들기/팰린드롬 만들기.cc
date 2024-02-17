@@ -1,21 +1,18 @@
 #include <iostream>
-#include <string.h>
 using namespace std;
 
-int cnt[26], flag;
 string s, ret;
+int cnt[26];
+int flag;
 char mid;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-    memset(cnt, 0, sizeof(cnt));
-
     cin >> s;
     for(int i = 0; i < s.size(); i++) {
         cnt[s[i] - 'A']++;
     }
-
-    for(int i =  25; i >= 0; i--) {
+    for(int i = 25; i >= 0; i--) {
         if(cnt[i]) {
             if(cnt[i] & 1) {
                 flag++;
@@ -36,10 +33,8 @@ int main() {
         return 0;
     }
     if(flag == 1) {
-        ret.insert(ret.begin() + ret.size()/ 2, mid);
+        ret.insert(ret.begin() + ret.size() / 2, mid);
     }
     cout << ret << '\n';
-
-
     return 0;
 }
