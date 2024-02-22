@@ -1,22 +1,22 @@
 #include <iostream>
-#include <queue>
 #include <algorithm>
+#include <queue>
 using namespace std;
+
+
+struct A {
+    int a, b, c;
+};
 int n, a[3], visited[64][64][64];
-int _a[6][3] = {
+int _a[6][3]{
         {9, 3, 1},
         {9, 1, 3},
         {3, 9, 1},
         {3, 1, 9},
-        {1, 9, 3},
+        {1, 9 ,3},
         {1, 3, 9}
 };
-
-struct A  {
-    int a, b, c;
-};
 queue<A> q;
-
 int solve(int a, int b, int c) {
     visited[a][b][c] = 1;
     q.push({a, b, c});
@@ -25,7 +25,7 @@ int solve(int a, int b, int c) {
         int b = q.front().b;
         int c = q.front().c;
         q.pop();
-        if(visited[0][0][0]) {
+        if(visited[0][0][0]){
             break;
         }
         for(int i = 0; i < 6; i++) {
@@ -35,13 +35,12 @@ int solve(int a, int b, int c) {
             if(visited[na][nb][nc]) {
                 continue;
             }
-            visited[na][nb][nc] = visited[a][b][c]  + 1;
-            q.push({na, nb, nc});
+            visited[na][nb][nc] = visited[a][b][c] + 1;
+            q.push({na, nb ,nc});
         }
     }
     return visited[0][0][0] - 1;
 }
-
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
