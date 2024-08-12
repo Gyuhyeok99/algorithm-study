@@ -1,29 +1,27 @@
 #include <iostream>
 using namespace std;
+
 int n;
-string s;
+string p, s;
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL), cout.tie(NULL);
+    cin.tie(NULL);cout.tie(NULL);
     cin >> n;
-    cin >> s;
-    int idx = s.find('*');
-    string prefix = s.substr(0, idx);
-    string suffix = s.substr(idx + 1);
-
+    cin >> p;
+    auto it = p.find("*");
+    string prefix = p.substr(0, it);
+    string suffix = p.substr(it + 1);
     for(int i = 0; i < n; i++) {
-        string q;
-        cin >> q;
-        if(prefix.size() + suffix.size() > q.size()) {
+        cin >> s;
+        if(s.size() < prefix.size() + suffix.size()) {
             cout << "NE" << '\n';
+            continue;
+        }
+        if(s.substr(0, prefix.size()) == prefix && s.substr(s.size() - suffix.size()) == suffix) {
+            cout << "DA" << '\n';
         }
         else {
-            if (q.substr(0, prefix.size()) == prefix
-                && q.substr(q.size() - suffix.size()) == suffix) {
-                cout << "DA" << '\n';
-            } else {
-                cout << "NE" << '\n';
-            }
+            cout << "NE" << '\n';
         }
     }
     return 0;
