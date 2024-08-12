@@ -1,35 +1,30 @@
 #include <iostream>
-#include <string.h>
-
 using namespace std;
-int a[101];
-int A, B, C;
-int x, y;
-int main() {
 
+int arr[101];
+int a, b, c, sum;
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);cout.tie(NULL);
-    memset(a, 0, sizeof(a));
-    cin >> A >> B >> C;
+    cin >> a >> b >> c;
     for(int i = 0; i < 3; i++) {
-        cin >> x >> y;
-        for(int j = x; j < y; j++) {
-            a[j]++;
+        int start, end;
+        cin >> start >> end;
+        for(int j = start; j < end; j++) {
+            arr[j]++;
         }
     }
-    int sum = 0;
-    for(int i = 0; i < 101; i++) {
-        if(a[i] == 1) {
-            sum += A;
+    for(int x : arr) {
+        if(x == 1) {
+            sum += a;
         }
-        else if(a[i] == 2) {
-            sum += B * 2;
+        else if (x == 2) {
+            sum += 2 * b;
         }
-        else if(a[i] == 3) {
-            sum += C * 3;
+        else if (x == 3) {
+            sum += 3 * c;
         }
     }
-    cout << sum << '\n';
-
+    cout << sum;
     return 0;
 }
