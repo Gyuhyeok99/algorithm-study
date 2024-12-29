@@ -1,25 +1,23 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#define y1 aaaa
+#include <queue>
 using namespace std;
 
-int x1, y1, x2, y2, ny, nx, a[101][101], visited[101][101], m, n, k;
 int dy[] = {-1, 0, 1, 0};
-int dx[] = {0, 1, 0, -1};
-vector<int> ret;
+int dx[] = {0, 1, 0, - 1};
+int a[101][101], visited[101][101];
+int m, n, k, s_x, s_y, e_x, e_y;
+priority_queue<int, vector<int>, greater<int>> pq;
+
 int dfs(int y, int x) {
-    visited[y][x] = 1;
     int ret = 1;
+    visited[y][x] = 1;
     for(int i = 0; i < 4; i++) {
-        ny = y + dy[i];
-        nx = x + dx[i];
-        if(ny < 0 || nx < 0 || ny >= m || nx >= n || a[ny][nx] == 1) {
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+        if(ny < 0 || nx < 0 || ny >= m || nx >= n)
             continue;
-        }
-        if(visited[ny][nx] == 1) {
+        if(a[ny][nx] || visited[ny][nx])
             continue;
-        }
         ret += dfs(ny, nx);
     }
     return ret;
@@ -30,25 +28,25 @@ int main() {
 
     cin >> m >> n >> k;
     for(int i = 0; i < k; i++) {
-        cin >> x1 >> y1 >> x2 >> y2;
-        for(int x = x1; x < x2; x++) {
-            for(int y = y1; y < y2; y++) {
-                a[y][x] = 1;
+        cin >> s_x >> s_y >> e_x >> e_y;
+        for(int j = s_y; j < e_y; j++) {
+            for(int u = s_x; u < e_x; u++) {
+                a[j][u] = 1;
             }
         }
     }
-    for(int i = 0; i < m; i++){
-        for(int j = 0; j < n; j++){
-            if(a[i][j] != 1 & visited[i][j] == 0) {
-                ret.push_back(dfs(i, j));
+    for(int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (!a[i][j] && !visited[i][j]) {
+                pq.push(dfs(i, j));
             }
         }
     }
-    sort(ret.begin(), ret.end());
-    cout << ret.size() << '\n';
-    for(int i : ret) {
-        cout << i << ' ';
+    cout << pq.size() << '\n';
+
+    while(pq.size()) {
+        cout << pq.top() << ' ';
+        pq.pop();
     }
-    cout << '\n';
     return 0;
 }
