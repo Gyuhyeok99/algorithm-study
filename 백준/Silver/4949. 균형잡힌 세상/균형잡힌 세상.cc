@@ -1,37 +1,29 @@
 #include <iostream>
 #include <stack>
-#include <string>
 using namespace std;
 
+string s;
 int main() {
-
-    string parenthesis;
-    bool flag;
-    while(true){
-        stack<char> stack;
-        getline(cin, parenthesis);
-        flag = true;
-        if(parenthesis.size() == 1 && parenthesis[0] == '.') {
-            return 0;
-        }
-        for(int j = 0; parenthesis[j] != '.'; j++) {
-            if(parenthesis[j] == '(' || parenthesis[j] == '[') {
-                stack.push(parenthesis[j]);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);cout.tie(NULL);
+    while(true) {
+        getline(cin, s);
+        bool flag = true;
+        if (s[0] == '.' && s.size() == 1) return 0;
+        stack<char> st;
+        for(int i = 0; s[i] != '.';i++) {
+            if(s[i] == '(' || s[i] == '[') {
+                st.push(s[i]);
             }
-            else if (parenthesis[j] == ')' || parenthesis[j] == ']') {
-                if (stack.empty() || (parenthesis[j] == ')' && stack.top() != '(') || (parenthesis[j] == ']' && stack.top() != '[')) {
+            else if(s[i] == ')' || s[i] == ']') {
+                if(st.empty() || s[i] == ')' && st.top() != '(' || s[i] == ']' && st.top() != '[') {
                     flag = false;
                     break;
                 }
-                stack.pop();
+                st.pop();
             }
         }
-
-        if(!(stack.empty())){
-            flag = false;
-        }
-
-        if(flag) {
+        if(st.empty() && flag) {
             cout << "yes" << '\n';
         }
         else {
