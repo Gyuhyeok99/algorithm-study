@@ -2,33 +2,28 @@
 #include <stack>
 using namespace std;
 
+int n;
+string s;
 int main() {
-
-    string parenthesis;
-    int n;
-    bool flag;
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
     cin >> n;
     for(int i = 0; i < n; i++) {
-        stack<char> stack;
-        cin >> parenthesis;
-        flag = true;
-        for(int j = 0; j < parenthesis.size(); j++) {
-            if(parenthesis[j] == '(') {
-                stack.push(parenthesis[j]);
+        cin >> s;
+        stack<char> st;
+        bool flag = true;
+        for(int j = 0; j < s.size(); j++) {
+            if(s[j] == '(') {
+                st.push(s[j]);
             }
-            else if(parenthesis[j] == ')') {
-                if(stack.empty()) {
-                    flag = false;
-                    break;
-                }
-                stack.pop();
+            else if(st.empty() && s[j] == ')') {
+                flag = false;
+            }
+            else if(st.size() && s[j] == ')' && st.top() == '(') {
+                st.pop();
             }
         }
-        if(!(stack.empty())){
-            flag = false;
-        }
-
-        if(flag) {
+        if(st.empty() && flag) {
             cout << "YES" << '\n';
         }
         else {
