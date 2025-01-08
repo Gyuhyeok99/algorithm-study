@@ -1,43 +1,63 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <vector>
 using namespace std;
-int n, m, a[54][54], result = 987654321;
-vector<vector<int>>chickenList;
-vector<pair<int, int>> _home, chicken;
-void combi(int start, vector<int> v){
-    if(v.size() == m){
-        chickenList.push_back(v);
+
+vector<pair<int, int>> chicken;
+vector<pair<int, int>> home;
+vector<vector<int>> v;
+int n, m, temp;
+int result = 987654321;
+
+void combi(int start, vector<int> b) {
+    if(b.size() == m) {
+        v.push_back(b);
         return;
     }
-    for(int i = start + 1; i < chicken.size(); i++){
-        v.push_back(i);
-        combi(i, v);
-        v.pop_back();
+    for(int i = start + 1; i < chicken.size(); i++) {
+        b.push_back(i);
+        combi(i, b);
+        b.pop_back();
     }
     return;
 }
-int main(){
+
+int solve(pair<int, int> h, int c) {
+    return abs(chicken[c].first - h.first) + abs(chicken[c].second - h.second);
+
+}
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
     cin >> n >> m;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            cin >> a[i][j];
-            if(a[i][j] == 1)_home.push_back({i, j});
-            if(a[i][j] == 2)chicken.push_back({i, j});
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            cin >> temp;
+            if(temp == 1) {
+                home.push_back({i, j});
+            }
+            else if(temp == 2) {
+                chicken.push_back({i, j});
+            }
         }
     }
-    vector<int> v;
-    combi(-1, v);
-    for(vector<int> cList : chickenList){
+    vector<int> b;
+    combi(-1, b);
+
+    for(vector<int> select : v) {
         int ret = 0;
-        for(pair<int, int> home : _home){
-            int _min = 987654321;
-            for(int ch : cList){
-                int _dist = abs(home.first - chicken[ch].first) + abs(home.second - chicken[ch].second);
-                _min = min(_min, _dist);
+        for(auto h : home) {
+            int t = 987654321;
+            for(int c : select) {
+                t = min(t, solve(h, c));
             }
-            ret += _min;
+            ret += t;
         }
         result = min(result, ret);
     }
-    cout << result << "\n";
+    cout << result << '\n';
     return 0;
 }
