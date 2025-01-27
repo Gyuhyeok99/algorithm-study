@@ -1,61 +1,75 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 using namespace std;
-int n, ret=987654321, v[20][20], p[20][20], dy[4] = { -1,1,0,0 }, dx[4] = {0,0,-1,1};
 
-int setFlower(int y, int x){ 
-    v[y][x] = 1;
-    int s = p[y][x];
-    for (int i = 0; i < 4; i++) {
+int dy[] = {-1 ,0, 1, 0};
+int dx[] = {0, 1, 0, -1};
+int a[11][11], visited[11][11];
+int n, ret = 987654321;
+
+int setFlower(int y, int x) {
+    visited[y][x] = 1;
+    int sum = a[y][x];
+    for(int i = 0; i < 4; i++) {
         int ny = y + dy[i];
         int nx = x + dx[i];
-        v[ny][nx] = 1;
-        s += p[ny][nx];
+        sum += a[ny][nx];
+        visited[ny][nx] = 1;
     }
-    return s; 
-}
-bool check(int y, int x) { 
-    if (v[y][x]) return 0;
-    for (int i = 0; i < 4; i++) {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if (ny<0 || ny>=n || nx < 0 || nx >= n || v[ny][nx]) {
-            return 0;
-        } 
-    } 
-    return 1;  
+    return sum;
 }
 
 void eraseFlower(int y, int x) {
-    v[y][x] = 0;
-    for (int i = 0; i < 4; i++) {
+    visited[y][x] = 0;
+    for(int i = 0; i < 4; i++) {
         int ny = y + dy[i];
         int nx = x + dx[i];
-        v[ny][nx] = 0;
+        visited[ny][nx] = 0;
     }
+    return;
 }
-void flower(int cnt,int hap) {
-    if (cnt == 3) {
-        ret = min(ret, hap);
+
+bool check(int y, int x) {
+    if(visited[y][x]) {
+        return 0;
+    }
+    for(int i = 0; i < 4; i++) {
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+        if(ny < 0 || nx < 0 || ny >= n || nx >= n || visited[ny][nx]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void go(int cnt, int sum) {
+    if(cnt == 3) {
+        ret = min(ret, sum);
         return;
     }
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) { 
-            if (check(i, j)) {   
-                flower(cnt+1,hap + setFlower(i, j)); 
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if(check(i, j)) {
+                go(cnt + 1, sum + setFlower(i, j));
                 eraseFlower(i, j);
             }
         }
-    } 
+    }
 }
 
-int main()
-{
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
+
     cin >> n;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> p[i][j];
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            cin >> a[i][j];
         }
     }
-    flower(0, 0);
-    cout << ret;
+
+    go(0, 0);
+    cout << ret << '\n';
+    return 0;
 }
