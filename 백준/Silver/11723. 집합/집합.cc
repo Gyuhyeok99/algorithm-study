@@ -1,36 +1,41 @@
 #include <iostream>
-#include <string>
 using namespace std;
- 
-int main(){
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    unsigned int s = 0;
-    int m, n;
-    string a ="";
+
+int m, x;
+unsigned int bit;
+string s;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
     cin >> m;
-    while(m--){
-        cin >> a;
-        if(a=="add"){
-            cin >> n;
-            s |= (1 << n);
-        }else if(a == "remove"){
-            cin >> n;
-            s &= ~(1 << n);
-        }else if(a== "check"){
-            cin >> n;
-            if(s & (1<<n)){
+    for(int i = 0; i < m; i++) {
+        cin >> s;
+        if(s == "add") {
+            cin >> x;
+            bit |= (1 << x);
+        }
+        else if(s == "remove") {
+            cin >> x;
+            bit &= ~(1 << x);
+        }
+        else if(s == "check") {
+            cin >> x;
+            if(bit & (1 << x)) {
                 cout << 1 << '\n';
-            }else{
+            }
+            else {
                 cout << 0 << '\n';
             }
-        }else if(a=="toggle"){
-            cin >> n;
-            s ^= (1<<n);
-        }else if(a=="all"){
-            s = (1 << 21) - 1;
-        }else if(a == "empty"){
-            s = 0;
+        }
+        else if(s == "toggle") {
+            cin >> x;
+            bit ^= (1 << x);
+        }
+        else if(s == "all") {
+            bit = (1 << 21) - 1;
+        }
+        else if(s == "empty") {
+            bit = 0;
         }
     }
     return 0;
