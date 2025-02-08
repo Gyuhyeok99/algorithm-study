@@ -3,16 +3,16 @@
 #include <algorithm>
 using namespace std;
 
-int n, k, mask, ret;
+int n, k, ret, mask;
 string s[51];
-vector<int> v;
+vector <int> v;
 
 int go(int m) {
     int cnt = 0;
     for(int i = 0; i < n; i++) {
         bool flag = true;
-        for(int j = 4; j < s[i].size(); j++) {
-            if(!(m & (1 << s[i][j] - 'a'))) {
+        for(int j = 4; j < s[i].size() - 4; j++) {
+            if(!(m & (1 << (s[i][j] - 'a')))) {
                 flag = false;
                 break;
             }
@@ -28,14 +28,14 @@ void solve(int idx, int selected, int m) {
         ret = max(ret, go(m));
         return;
     }
-
     for(int i = idx; i < v.size(); i++) {
         solve(i + 1, selected + 1, m | (1 << v[i]));
     }
 }
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
     mask |= (1 << ('a' - 'a'));
     mask |= (1 << ('n' - 'a'));
@@ -44,9 +44,6 @@ int main() {
     mask |= (1 << ('c' - 'a'));
 
     cin >> n >> k;
-
-
-
     for(int i = 0; i < n; i++) {
         cin >> s[i];
         for(int j = 4; j < s[i].size() - 4; j++) {
@@ -59,16 +56,12 @@ int main() {
         }
     }
 
-    if(k < 5) {
-        cout << 0 << '\n';
-        return 0;
-    }
-
-    if(v.size() <= k - 5) {
+    if ((int)v.size() <= k - 5) {
         cout << n << '\n';
         return 0;
     }
 
+    
     solve(0, 0, mask);
     cout << ret << '\n';
     return 0;
