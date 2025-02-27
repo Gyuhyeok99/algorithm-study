@@ -4,46 +4,64 @@
 
 using namespace std;
 
-bool match(vector<int>& v1, vector<int>& v2, int target, bool isSame) {
-    for(int i = 0; i < v1.size(); i++) {
-        for(int j = 0; j < v2.size(); j++) {
-            if(isSame && i == j) {
-                continue;
-            }
-            if(v1[i] + v2[j] == target) {
-                v1.erase(v1.begin() + i);
-                v2.erase(v2.begin() + j - (isSame ? 1 : 0));
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-
 int solution(int coin, vector<int> cards) {
-    int answer = 1;
-    vector<int> my;
-    vector<int> wait;
-    for(int i = 0; i < cards.size() / 3; i++) {
+    int answer = 0;
+    vector<int> my;   // 내 카드
+    vector<int> wait; // 대기 카드
+
+    int n = cards.size();
+
+    // 처음 카드 분배
+    for (int i = 0; i < n / 3; i++) {
         my.push_back(cards[i]);
     }
-    for(int i = cards.size() / 3; i < cards.size(); i += 2) {
-        wait.push_back(cards[i]);
-        wait.push_back(cards[i + 1]);
-        
-        if(match(my, my, cards.size() + 1, true)) {
+
+    // 남은 카드 대기열에 추가
+    for (int i = n / 3; i < n; i += 2) {
+        if (i < n) wait.push_back(cards[i]);
+        if (i + 1 < n) wait.push_back(cards[i + 1]);
+
+        // (1) 내 카드끼리 합이 n인지 체크
+        for (int j = 0; j < my.size(); j++) {
+            for (int k = j + 1; k < my.size(); k++) { // ✅ 중복 체크 방지 (j != k)
+                if (my[j] + my[k] == n) {
+                    answer++;
+                    goto NEXT_ROUND; // ✅ 매칭되면 바로 다음 라운드 진행
+                }
+            }
         }
-        else if(coin >= 1 && match(my, wait, cards.size() + 1, false)) {
-            coin--;
+
+        // (2) 코인이 1개 이상 있으면 내 카드 + 대기 카드 체크
+        if (coin >= 1) {
+            for (int j = 0; j < my.size(); j++) {
+                for (int k = 0; k < wait.size(); k++) {
+                    if (my[j] + wait[k] == n) {
+                        answer++;
+                        coin--;
+                        wait.erase(wait.begin() + k); // ✅ 요소 삭제 후 다음 루프
+                        goto NEXT_ROUND;
+                    }
+                }
+            }
         }
-        else if(coin >= 2 && match(wait, wait, cards.size() + 1, true)) {
-            coin -= 2;
+
+        // (3) 코인이 2개 이상 있으면 대기 카드 두 장 사용 가능
+        if (coin >= 2 && wait.size() >= 2) {
+            for (int j = 0; j < wait.size(); j++) {
+                for (int k = j + 1; k < wait.size(); k++) { // ✅ 중복 제거
+                    if (wait[j] + wait[k] == n) {
+                        answer++;
+                        coin -= 2;
+                        wait.erase(wait.begin() + k);
+                        wait.erase(wait.begin() + j); // ✅ 뒤에서 삭제
+                        goto NEXT_ROUND;
+                    }
+                }
+            }
         }
-        else {
-            break;
-        }
-        answer++;
-    }     
+
+    NEXT_ROUND:; // ✅ 한 번이라도 매칭되면 다음 라운드로
+    }
+
     return answer;
 }
