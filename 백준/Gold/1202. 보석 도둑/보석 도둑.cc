@@ -1,14 +1,15 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
+
 using namespace std;
 typedef long long ll;
+int n, k, m, v, c;
+ll ret;
+vector<pair<int, int>> v1;
+vector<int> v2;
+priority_queue<int> pq;
 
-ll n, k, m, v, c, ret;
-vector<pair<ll, ll>> v1;
-vector<ll> v2;
-priority_queue<ll> pq;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
@@ -22,12 +23,15 @@ int main() {
         cin >> c;
         v2.push_back(c);
     }
+
     sort(v1.begin(), v1.end());
     sort(v2.begin(), v2.end());
+
     int j = 0;
     for(int i = 0; i < k; i++) {
-        while(j < n && v1[j].first <= v2[i]) {
-            pq.push(v1[j++].second);
+        while(j < n && v2[i] >= v1[j].first) {
+            pq.push(v1[j].second);
+            j++;
         }
         if(pq.size()) {
             ret += pq.top();
