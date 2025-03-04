@@ -1,20 +1,19 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
-
+#include <vector>
 using namespace std;
 
 const int INF = 987654321;
-
+int a[101], visited[101];
 int n, k, ret;
 vector<int> v;
-int a[101], visited[101];
+
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+    cin.tie(NULL); cout.tie(NULL);
 
     cin >> n >> k;
+
     for(int i = 0; i < k; i++) {
         cin >> a[i];
     }
@@ -37,10 +36,9 @@ int main() {
                     }
                 }
                 visited[num] = 0;
-                ret++;
                 v.erase(find(v.begin(), v.end(), num));
+                ret++;
             }
-
             v.push_back(a[i]);
             visited[a[i]] = 1;
         }
