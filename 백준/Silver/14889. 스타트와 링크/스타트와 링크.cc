@@ -1,64 +1,51 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <cmath>
 using namespace std;
 
-const int INF = 987654321;
-
-int n, k;
+int n, ret = 987654321;
 int arr[21][21];
-int ret = INF;
 
-int getSum(vector<int> sums) {
-    int sum = 0;
-    for(int i : sums) {
-        for(int j : sums) {
+int go(vector<int>& a, vector<int>& b) {
+    int sumA = 0, sumB = 0;
+    for(int i = 0; i < n / 2; i++) {
+        for(int j = 0; j < n / 2; j++) {
             if(i == j) {
                 continue;
             }
-            sum += arr[i][j];
+            sumA += arr[a[i]][a[j]];
+            sumB += arr[b[i]][b[j]];
         }
     }
-    return sum;
-}
-
-void combi(int start, vector<int> selectedA) {
-    if(ret == 0) {
-        return;
-    }
-    if(selectedA.size() == k) {
-        vector<int> selectedB;
-        for(int i = 0; i < n; i++) {
-            if(find(selectedA.begin(), selectedA.end(), i) == selectedA.end()) {
-                selectedB.push_back(i);
-            }
-        }
-        int a = getSum(selectedA);
-        int b = getSum(selectedB);
-        ret = min(abs(a - b), ret);
-        return;
-    }
-
-    for(int i = start + 1; i < n; i++) {
-        selectedA.push_back(i);
-        combi(i, selectedA);
-        selectedA.pop_back();
-    }
+    return abs(sumA - sumB);
 }
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
     cin >> n;
-    k = n / 2;
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
-            cin>> arr[i][j];
+            cin >> arr[i][j];
         }
     }
-    combi(-1, {});
 
+    for(int i = 0; i < (1 << n); i++) {
+        if(__builtin_popcount(i) != (n / 2)) {
+            continue;
+        }
+        vector<int> a, b;
+        for(int j = 0; j < n; j++) {
+            if(i & 1 << j) {
+                a.push_back(j);
+            }
+            else {
+                b.push_back(j);
+            }
+        }
+        ret = min(ret, go(a, b));
+    }
     cout << ret << '\n';
     return 0;
 }
