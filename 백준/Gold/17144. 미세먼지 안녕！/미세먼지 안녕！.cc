@@ -1,93 +1,105 @@
 #include <iostream>
 #include <vector>
-#include <cstring> // memset 사용
+#include <cstring>
 using namespace std;
 
-const int dy[] = {-1, 0, 1, 0};
-const int dx[] = {0, 1, 0, -1};
-int arr1[51][51];
-int arr2[51][51];
-vector<pair<int, int>> cleaner;
-int r, c, t;
+const int dy1[] = {0, -1, 0, 1};
+const int dx1[] = {1, 0, -1, 0};
+const int dy2[] = {0, 1, 0, -1};
+const int dx2[] = {1, 0, -1, 0};
+int arr[51][51], temp[51][51], n, m, t, ret;
+vector<pair<int, int>> v1, v2;
+bool flag = true;
 
-void solve(int y, int x) {
-    int spread_amount = arr1[y][x] / 5;
-    int spread_count = 0;
-
+void miseCleaner(int y, int x) {
+    int mount = arr[y][x] / 5;
     for(int i = 0; i < 4; i++) {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if(ny < 0 || nx < 0 || ny >= r || nx >= c) continue;
-
-        if((ny == cleaner[0].first && nx == cleaner[0].second) ||
-           (ny == cleaner[1].first && nx == cleaner[1].second)) {
+        int ny = y + dy1[i];
+        int nx = x + dx1[i];
+        if(ny < 0 || nx < 0 || ny >= n || nx >= m || arr[ny][nx] == -1) {
             continue;
         }
-
-        arr2[ny][nx] += spread_amount;
-        spread_count++;
+        temp[ny][nx] += mount;
+        arr[y][x] -= mount;
     }
-    arr2[y][x] -= spread_amount * spread_count;
+    return;
 }
 
-void air_cleaner() {
-    int up = cleaner[0].first;
-    int down = cleaner[1].first;
-
-    for(int i = up - 1; i > 0; i--) arr1[i][0] = arr1[i - 1][0]; // 아래로 이동
-    for(int i = 0; i < c - 1; i++) arr1[0][i] = arr1[0][i + 1]; // 왼쪽에서 오른쪽 이동
-    for(int i = 0; i < up; i++) arr1[i][c - 1] = arr1[i + 1][c - 1]; // 위로 이동
-    for(int i = c - 1; i > 1; i--) arr1[up][i] = arr1[up][i - 1]; // 오른쪽에서 왼쪽 이동
-    arr1[up][1] = 0; // 공기청정기에서 나오는 부분
-
-    // 아래쪽 공기청정기 (시계 방향)
-    for(int i = down + 1; i < r - 1; i++) arr1[i][0] = arr1[i + 1][0]; // 위로 이동
-    for(int i = 0; i < c - 1; i++) arr1[r - 1][i] = arr1[r - 1][i + 1]; // 왼쪽에서 오른쪽 이동
-    for(int i = r - 1; i > down; i--) arr1[i][c - 1] = arr1[i - 1][c - 1]; // 아래로 이동
-    for(int i = c - 1; i > 1; i--) arr1[down][i] = arr1[down][i - 1]; // 오른쪽에서 왼쪽 이동
-    arr1[down][1] = 0; // 공기청정기에서 나오는 부분
+void rota(vector<pair<int, int>> & v) {
+    for(int i = v.size() - 1; i > 0; i--) {
+        arr[v[i].first][v[i].second] = arr[v[i - 1].first][v[i -1].second];
+    }
+    arr[v[0].first][v[0].second] = 0;
+    return;
 }
 
+vector<pair<int, int>> pathCleaner(int sy, int sx, const int dy[], const int dx[]) {
+    vector<pair<int, int>> v;
+    int cnt = 0;
+    int y = sy;
+    int x = sx;
+    while(1) {
+        int ny = y + dy[cnt];
+        int nx = x + dx[cnt];
+        if(ny == sy && nx == sx) {
+            break;
+        }
+        if(ny < 0 || nx < 0 || ny >= n || nx >= m) {
+            cnt++;
+            continue;
+        }
+        y = ny; x = nx;
+        v.push_back({ny, nx});
+    }
+    return v;
+}
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
 
-    cin >> r >> c >> t;
+    cin >> n >> m >> t;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++) {
+            cin >> arr[i][j];
 
-    for(int i = 0; i < r; i++) {
-        for(int j = 0; j < c; j++) {
-            cin >> arr1[i][j];
-            if(arr1[i][j] == -1) {
-                cleaner.push_back({i, j});
+            if(arr[i][j] == -1) {
+                if(flag) {
+                    v1 = pathCleaner(i, j, dy1, dx1);
+                    flag = false;
+                }
+                else {
+                    v2 = pathCleaner(i, j, dy2, dx2);
+                }
             }
         }
     }
 
     while(t--) {
-        memset(arr2, 0, sizeof(arr2));
-
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                if(arr1[i][j] > 0) {
-                    solve(i, j);
+        memset(temp, 0, sizeof(temp));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(arr[i][j] != -1 && arr[i][j]) {
+                    miseCleaner(i, j);
                 }
             }
         }
-
-        for(int i = 0; i < r; i++) {
-            for(int j = 0; j < c; j++) {
-                arr1[i][j] += arr2[i][j];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                arr[i][j] += temp[i][j];
             }
         }
-        air_cleaner();
+        rota(v1);
+        rota(v2);
     }
-    int result = 0;
-    for(int i = 0; i < r; i++) {
-        for(int j = 0; j < c; j++) {
-            if(arr1[i][j] > 0) result += arr1[i][j];
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < m; j++) {
+            if(arr[i][j] != -1) {
+                ret += arr[i][j];
+            }
         }
     }
-    cout << result << '\n';
+    cout << ret << '\n';
     return 0;
 }
