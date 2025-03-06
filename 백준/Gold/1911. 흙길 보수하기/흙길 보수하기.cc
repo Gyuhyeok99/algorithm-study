@@ -3,22 +3,19 @@
 #include <algorithm>
 using namespace std;
 
-int n, l, idx, ret, cnt, a, b;
-vector<pair<int, int>> v;
+int n, l, ret, idx, cnt;
+vector<pair<int, int>> v(10001);
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
 
     cin >> n >> l;
     for(int i = 0; i < n; i++) {
-        cin >> a >> b;
-        v.push_back({a, b});
+        cin >> v[i].first >> v[i].second;
     }
-
-    sort(v.begin(), v.end());
-
+    sort(v.begin(), v.begin() + n);
     for(int i = 0; i < n; i++) {
-        if(v[i].second <= idx) {
+        if(idx >= v[i].second) {
             continue;
         }
         if(v[i].first >= idx) {
