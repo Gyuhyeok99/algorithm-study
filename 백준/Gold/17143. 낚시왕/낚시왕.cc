@@ -1,23 +1,25 @@
 #include <iostream>
-#include <vector>
 #include <cstring>
 using namespace std;
 
-const int dy[] = {-1, 1, 0, 0};
-const int dx[] = {0, 0, 1, -1};
-int r, c, m, h = -1, ret;
+int dy[] = {-1, 1, 0, 0};
+int dx[] = {0, 0, 1, -1};
+int r, c, m, ret, h = -1;
 struct Shark {
     int r, c, s, d, z;
     bool die;
-};
+} shark[10001];
 int temp[101][101];
-Shark shark[10001];
 
-void move(Shark& s, int idx) {
-    int cnt = s.s;
-    int y = s.r; int x = s.c;
-    int cycle = 0;
-    if(s.d <= 1) {
+
+void move(int idx) {
+    int y = shark[idx].r;
+    int x = shark[idx].c;
+    int cnt = shark[idx].s;
+    int dir = shark[idx].d;
+    int size = shark[idx].z;
+    int cycle;
+    if(dir <= 1) {
         cycle = 2 * (r - 1);
     }
     else {
@@ -27,20 +29,22 @@ void move(Shark& s, int idx) {
         cnt %= cycle;
     }
     while(cnt--) {
-        int ny = y + dy[s.d];
-        int nx = x + dx[s.d];
+        int ny = y + dy[dir];
+        int nx = x + dx[dir];
         if(ny < 0 || nx < 0 || ny >= r || nx >= c) {
-            s.d = s.d ^ 1;
-            ny = y + dy[s.d];
-            nx = x + dx[s.d];
+            dir ^= 1;
+            ny = y + dy[dir];
+            nx = x + dx[dir];
         }
         y = ny;
         x = nx;
     }
-    s.r = y;
-    s.c = x;
+    shark[idx].r = y;
+    shark[idx].c = x;
+    shark[idx].d = dir;
+
     if(temp[y][x] != -1) {
-        if(shark[temp[y][x]].z < shark[idx].z) {
+        if(shark[temp[y][x]].z < size) {
             shark[temp[y][x]].die = true;
             temp[y][x] = idx;
         }
@@ -51,11 +55,11 @@ void move(Shark& s, int idx) {
     else {
         temp[y][x] = idx;
     }
+    return;
 }
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
-
     cin >> r >> c >> m;
     for(int i = 0; i < m; i++) {
         cin >> shark[i].r >> shark[i].c >> shark[i].s >> shark[i].d >> shark[i].z;
@@ -63,7 +67,7 @@ int main() {
         shark[i].c--;
         shark[i].d--;
     }
-    while(h <= c - 1) {
+    while(h < c) {
         h++;
         bool flag = false;
         for(int i = 0; i < r; i++) {
@@ -82,7 +86,7 @@ int main() {
         memset(temp, -1, sizeof(temp));
         for(int i = 0; i < m; i++) {
             if(!shark[i].die) {
-                move(shark[i], i);
+                move(i);
             }
         }
     }
