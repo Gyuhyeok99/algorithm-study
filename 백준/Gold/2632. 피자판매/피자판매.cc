@@ -2,13 +2,14 @@
 #include <map>
 using namespace std;
 
-int a[1001], b[1001], ret, aPSum[2002], bPSum[2002], x, n, m;
+int x, n, m, ret;
+int a[1001], b[1001], aSum[2002], bSum[2002];
 map<int, int> aCnt, bCnt;
 
-void make(int t, int PSum[], map<int, int>& mp) {
+void make(int t, int psum[], map<int, int>& mp) {
     for(int i = 1; i <= t; i++) {
-        for(int j = i; j < i + t; j++) {
-            int sum = PSum[j] - PSum[j - i];
+        for(int j = i; j < t + i; j++) {
+            int sum = psum[j] - psum[j - i];
             mp[sum]++;
             if(i == t) {
                 break;
@@ -28,22 +29,24 @@ int main() {
     for(int i = 0; i < m; i++) {
         cin >> b[i];
     }
+
     for(int i = 1; i <= n; i++) {
-        aPSum[i] = aPSum[i - 1] + a[i - 1];
-    }
-    for(int i = n + 1; i <= 2 * n; i++) {
-        aPSum[i] = aPSum[i - 1] + a[i - 1 - n];
+        aSum[i] = aSum[i - 1] + a[i - 1];
     }
     for(int i = 1; i <= m; i++) {
-        bPSum[i] = bPSum[i - 1] + b[i - 1];
-    }
-    for(int i = m + 1; i <= 2 * m; i++) {
-        bPSum[i] = bPSum[i - 1] + b[i - 1 - m];
+        bSum[i] = bSum[i - 1] + b[i - 1];
     }
 
-    make(n, aPSum, aCnt);
-    make(m , bPSum, bCnt);
-    ret = (aCnt[x] + bCnt[x]);
+    for(int i = n + 1; i <= 2 * n; i++) {
+        aSum[i] = aSum[i - 1] + a[i - 1 - n];
+    }
+    for(int i = m + 1; i <= 2 * m; i++) {
+        bSum[i] = bSum[ i -1] + b[i - 1 - m];
+    }
+
+    make(n, aSum, aCnt);
+    make(m, bSum, bCnt);
+    ret += (aCnt[x] + bCnt[x]);
     for(int i = 1; i < x; i++) {
         ret += (aCnt[i] * bCnt[x - i]);
     }
