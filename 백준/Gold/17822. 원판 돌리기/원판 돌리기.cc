@@ -34,24 +34,23 @@ int main() {
 
         vector<vector<int>> temp = v;
         bool flag = true;
-        vector<pair<int, int>> to_erase;
 
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < m; j++) {
                 if (v[i][j] == -1) continue;
                 int curr = v[i][j];
 
-                if (v[i][(j + 1) % m] == curr) to_erase.push_back({i, j}), to_erase.push_back({i, (j + 1) % m});
-                if (v[i][(j - 1 + m) % m] == curr) to_erase.push_back({i, j}), to_erase.push_back({i, (j - 1 + m) % m});
-                if (i > 0 && v[i - 1][j] == curr) to_erase.push_back({i, j}), to_erase.push_back({i - 1, j});
-                if (i < n - 1 && v[i + 1][j] == curr) to_erase.push_back({i, j}), to_erase.push_back({i + 1, j});
+                if (v[i][(j + 1) % m] == curr) 
+                    temp[i][j] = temp[i][(j + 1) % m] = -1, flag = false;
+                if (v[i][(j - 1 + m) % m] == curr) 
+                    temp[i][j] = temp[i][(j - 1 + m) % m] = -1, flag = false;
+                if (i > 0 && v[i - 1][j] == curr) 
+                    temp[i][j] = temp[i - 1][j] = -1, flag = false;
+                if (i < n - 1 && v[i + 1][j] == curr) 
+                    temp[i][j] = temp[i + 1][j] = -1, flag = false;
             }
         }
 
-        if (!to_erase.empty()) {
-            flag = false;
-            for (auto [x, y] : to_erase) temp[x][y] = -1;
-        }
         v = temp;
 
         if (flag) {
@@ -59,7 +58,7 @@ int main() {
             double cnt = 0;
             for(int i = 0; i < n; i++) {
                 for(int j = 0; j < m; j++) {
-                    if(v[i][j] > 0) {  // 0 이상이 아니라 0 초과
+                    if(v[i][j] > 0) {
                         sum += v[i][j];
                         cnt++;
                     }
@@ -82,7 +81,7 @@ int main() {
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
-            if(v[i][j] > 0) {  // 0 이상이 아니라 0 초과
+            if(v[i][j] > 0) {
                 ret += v[i][j];
             }
         }
