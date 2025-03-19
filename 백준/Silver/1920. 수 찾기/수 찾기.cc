@@ -2,43 +2,42 @@
 #include <algorithm>
 using namespace std;
 
-int binarySearch(int arr[], int l, int h, int k) {
-    while (l <= h) {
-        int m = (l + h) / 2;
-        if (k == arr[m]) {
-            return 1;
-        } else if (k < arr[m]) {
-            h = m - 1;
-        } else {
-            l = m + 1;
+int n, m, num;
+int a[100001];
+
+bool find(int num, int l, int r) {
+    while(l <= r) {
+        int mid = (l + r) / 2;
+        if(num == a[mid]) {
+            return true;
+        }
+        else if(num > a[mid]) {
+            l = mid + 1;
+        }
+        else {
+            r = mid - 1;
         }
     }
-    return -1;
+    return false;
 }
-
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); cout.tie(NULL);
 
-    int arr[100000];
-    int n;
     cin >> n;
     for(int i = 0; i < n; i++) {
-        cin >> arr[i];
+        cin >> a[i];
     }
-    sort(arr, arr + n);
-
-    int s;
-    cin >> s;
-    int x;
-    for(int i = 0; i < s; i++) {
-        cin >> x;
-        if((binarySearch(arr, 0, n - 1, x)) == 1) {
+    sort(a, a + n);
+    cin >> m;
+    for(int i = 0; i < m; i++) {
+        cin >> num;
+        if(find(num, 0, n - 1)) {
             cout << 1 << '\n';
         }
         else {
             cout << 0 << '\n';
         }
     }
-
+    return 0;
 }
