@@ -1,32 +1,33 @@
 #include <iostream>
-#include <queue>
+#include <algorithm>
+#include <vector>
 using namespace std;
 
 int n, s, e, ret;
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+vector<pair<int, int>> v;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
 
     cin >> n;
-    while(n--) {
+    for(int i = 0; i < n; i++) {
         cin >> s >> e;
-        pq.push({e, s});
+        v.push_back({e, s});
     }
-    e = pq.top().first;
-    s = pq.top(). second;
-    pq.pop();
+    sort(v.begin(), v.end());
+
+    s = v[0].second;
+    e = v[0].first;
     ret++;
-    while(pq.size()) {
-        int en = pq.top().first;
-        int st = pq.top().second;
-        pq.pop();
-        if(st >= e) {
-            e = en;
-            s = st;
-            ret++;
+    for(int i = 1; i < n; i++) {
+        if(v[i].second < e) {
+            continue;
         }
+        s = v[i].second;
+        e = v[i].first;
+        ret++;
     }
     cout << ret << '\n';
+
     return 0;
 }
