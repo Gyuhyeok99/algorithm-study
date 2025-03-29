@@ -1,11 +1,10 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 int n, d, c, ret;
-vector<pair<int, int>>v;
+vector<pair<int, int>> v;
 priority_queue<int, vector<int>, greater<int>> pq;
 int main() {
     ios_base::sync_with_stdio(false);
@@ -16,10 +15,11 @@ int main() {
         cin >> d >> c;
         v.push_back({d, c});
     }
-    sort(v.begin(),v.end());
+    sort(v.begin(), v.end());
+
     for(int i = 0; i < n; i++) {
         pq.push(v[i].second);
-        while(pq.size() > v[i].first) {
+        while(v[i].first < pq.size()) {
             pq.pop();
         }
     }
