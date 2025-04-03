@@ -53,7 +53,7 @@ int main() {
                             flag |= (1 << 0);
                         }
                         else {
-                            flag |= (1 << 2);
+                            flag |= (1 << 1);
                         }
                     }
                     if(sum < 5) {
