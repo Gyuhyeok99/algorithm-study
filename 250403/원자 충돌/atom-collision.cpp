@@ -31,8 +31,8 @@ int main() {
                 if(v[i][j].size()) {
                     for(auto aa : v[i][j]) {
                         int dir = aa.d;
-                        int ny = (i + dy[dir] * (aa.s % n) + n) % n;
-                        int nx = (j + dx[dir] * (aa.s % n) + n) % n;
+                        int ny = (i + dy[dir] * aa.s % n + n * 1000) % n;
+                        int nx = (j + dx[dir] * aa.s % n + n * 1000) % n;
                         temp[ny][nx].push_back({aa.m, aa.s, dir});
                     }
 
