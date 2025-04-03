@@ -1,3 +1,3 @@
-select count(*) as USERS
+SELECT count(*)
 from USER_INFO
-where year(JOINED) = 2021 and age >= 20 and age <= 29
+where date_format(JOINED, '%Y') = 2021 and AGE >= 20 and AGE <= 29
