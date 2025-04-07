@@ -1,35 +1,34 @@
 #include <iostream>
-#include <queue>
+#include <cstring>
+#include <algorithm>
 using namespace std;
 
-int n;
-int dp[1000004];
-int INF = 987654321;
+const int INF = 987654321;
+int n, dp[1000001];
 
-void solve(int here) {
-    if(here == 0) {
+void solve(int n) {
+    if(n == 0) {
         return;
     }
-    cout << here << ' ';
-    if(here % 3 == 0 && dp[here] == (dp[here / 3] + 1)) {
-        solve(here / 3);
+    cout << n << ' ';
+    if(!(n % 3) && dp[n] == dp[n / 3] + 1) {
+        solve(n / 3);
     }
-    else if(here % 2 == 0 && dp[here] == (dp[here / 2] + 1)) {
-        solve(here / 2);
+    else if(!(n % 2) && dp[n] == dp[n/2] + 1) {
+        solve(n / 2);
     }
-    else if(here - 1 >= 0 && (dp[here] == (dp[here - 1] + 1))) {
-        solve(here - 1);
+    else {
+        solve(n - 1);
     }
     return;
 }
 int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    fill(dp, dp + 1000004, INF);
+    cin.tie(NULL); cout.tie(NULL);
 
-    dp[1] = 0;
+    fill(dp, dp + 1000001, INF);
     cin >> n;
+    dp[1] = 0;
     for(int i = 1; i <= n; i++) {
         if(!(i % 3)) {
             dp[i] = min(dp[i / 3] + 1, dp[i]);
