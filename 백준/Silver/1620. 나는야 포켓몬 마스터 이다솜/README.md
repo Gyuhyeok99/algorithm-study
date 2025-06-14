@@ -4,15 +4,15 @@
 
 ### 성능 요약
 
-메모리: 20860 KB, 시간: 152 ms
+메모리: 195080 KB, 시간: 1964 ms
 
 ### 분류
 
-자료 구조, 해시를 사용한 집합과 맵
+자료 구조, 집합과 맵, 해시를 사용한 집합과 맵
 
 ### 제출 일자
 
-2024년 2월 17일 23:42:12
+2025년 6월 14일 15:33:59
 
 ### 문제 설명
 
@@ -106,7 +106,7 @@
 
 <p><img alt="" src="" style="height:182px; width:274px"></p>
 
-<p><img alt="" src="" style="height:183px; width:274px"></p>
+<p><img alt="" src="https://www.acmicpc.net/upload/201004/pe.PNG" style="height:183px; width:274px"></p>
 
 <p><img alt="" src="" style="height:183px; width:274px"></p>
 
