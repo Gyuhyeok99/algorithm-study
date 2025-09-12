@@ -4,48 +4,43 @@
 
 using namespace std;
 
-long long sumA, sumB, avg;
-int cnt;
+long long _sum, ret, sum1;
+queue<int> q1, q2;
 int solution(vector<int> queue1, vector<int> queue2) {
-    int answer = -1;
-    deque<int> dq1(queue1.begin(), queue1.end());
-    deque<int> dq2(queue2.begin(), queue2.end());
-
-    for(int i : queue1) {
-        sumA += i;
-        
+    int answer = 0;
+    for(int q : queue1) {
+        q1.push(q);
+        _sum += q;
+        sum1 += q;
     }
-    for(int i : queue2) {
-        sumB += i;
-    }
-    avg = (sumA + sumB) / 2;
     
-    int limit = (queue1.size() + queue2.size()) * 4;
-    while((sumA != sumB)) {
-        if(cnt > limit) {
-            break;
+    for(int q : queue2) {
+        q2.push(q);
+        _sum += q;
+    }
+    if (_sum % 2 != 0) {
+        return -1;
+    }
+    
+    ret = _sum / 2;
+    
+    while(sum1 != ret) {
+        answer++;
+        if(answer > (q1.size() + q2.size()) * 2) {
+            return -1;
         }
-        if(dq1.empty() || dq2.empty()) {
-            break;
-        }
-        if(sumA > sumB) {
-            int x = dq1.front();
-            dq1.pop_front();
-            dq2.push_back(x);
-            sumA -= x;
-            sumB += x;
+        if(sum1 > ret) {
+            int value = q1.front();
+            sum1 -= value;
+            q2.push(value);
+            q1.pop();
         }
         else {
-            int x = dq2.front();
-            dq2.pop_front();
-            dq1.push_back(x);
-            sumA += x;
-            sumB -= x;
+            int value = q2.front();
+            sum1 += value;
+            q1.push(value);
+            q2.pop();
         }
-        cnt++;
-    }
-    if(sumA == sumB) {
-        answer = cnt;
     }
     return answer;
 }
